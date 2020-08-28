@@ -48,3 +48,30 @@ resxx.lines foreach println
 :sh hdfs dfs -cat /user/output/part-00000-9112568a-8bcc-4a88-86c6-52fc355dc5ad-c000.txt.gz
 
 ```
+
+
+## q4
+
+- できない・・・
+
+```
+val schema = Seq("cusid","city")
+val citydata4 = spark.read.option("sep","\t").csv("/user/testdata/t1q4_tab.csv").toDF(newColumns:_*)
+
+val citydata4 = spark.read.format("csv").option("header","true").option("sep","\t").option("inferSchema","true").load("/user/testdata/t1q4_tab.csv")
+
+
+
+citydata4.createOrReplaceTempView("cityview")
+val citydf = spark.sql("select userid, city from cityview where city = 'Caguas'")
+
+citydf.write.mode("overwrite").option("compression","deflate").format("csv").save("/user/output")
+```
+
+## q5
+
+- 
+
+```
+
+```
