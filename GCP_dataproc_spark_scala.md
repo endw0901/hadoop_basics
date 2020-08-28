@@ -9,3 +9,29 @@
 2.VM
 - クラスター名クリック→VM→SSH
 
+```
+// hdfsのファイル確認
+hdfs dfs -ls /user
+
+// GCSFUSEインストール => yes/no聞かれたら Y
+export GCSFUSE_REPO=gcsfuse-`lsb_release -c -s`
+echo "deb http://packages.cloud.google.com/apt $GCSFUSE_REPO main" | sudo tee /etc/apt/sources.list.d/gcsfuse.list
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install gcsfuse
+
+// VMローカルにGoogle Storageマウントポイント用フォルダ作成
+mkdir ~/spark-dataset
+
+// google storageにデータアップロード用フォルダ作成　endw-spark-dataframe
+
+// マウント： google storageとVMローカルフォルダをマウント
+gcsfuse endw-spark-dataframe ~/spark-dataset
+
+// VMローカルのフォルダにgoogle storageのフォルダ内容が表示されることを確認
+cd ./spark-dataset
+ls
+
+// hdfsに作業用フォルダ作成
+
+```
