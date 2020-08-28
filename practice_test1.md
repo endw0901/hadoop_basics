@@ -26,12 +26,14 @@ resxxx.lines foreach println
 ```
 
 ## q3
+- createOrReplaceTempView
+https://intellipaat.com/community/12213/how-does-createorreplacetempview-work-in-spark
 
 ```
 // data upload
-:sh hdfs dfs -put ~/spark-dataset/t1q3_price.csv /user/testdata
-:sh hdfs dfs -ls /user/testdata
-resxx.lines foreach println
-//
 
+//
+val pricedf = spark.read.format("csv").option("header","true").option("inferSchema","true").load("/user/testdata/t1q3_price.csv")
+pricedf.createOrReplaceTempView("product")
+spark.table("product").count
 ```
