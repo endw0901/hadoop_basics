@@ -70,8 +70,29 @@ citydf.write.mode("overwrite").option("compression","deflate").format("csv").sav
 
 ## q5
 
-- 
+- avroの代わりにcsvを読む
 
 ```
+val datadf = spark.read.format("csv").option("header","true").load("/user/testdata/t1q2_customer.csv")
+
+// withColumn 新しいfield作成(同名の場合置き換え)
+val datadf2 = datadf.withColumn("customer_fname",substring(col("customer_fname"),0,3))
+
+// list:xをタブ区切りのデータに置き換え
+val datadf3 = datadf2.map(x => x.mkString("\t"))
+
+datadf3.write.mode("overwrite").option("compression","bzip2").format("text").save("/user/output")
+```
+
+## q6
+
+- parquetの代わりにcsvを読む
+
+```
+val datadf1 = spark.read.format("csv").option("header","true").option("inferSchema","true").load("/user/testdata/t1q3_price.csv")
+datadf1.createOrReplaceTempView("priceview")
+val datadf2 = spark.sql("select category, price from priceview where price > 100")
+
+datadf2.write.mode("overwrite").option("compression","uncompressed").parquet("/user/output/")
 
 ```
