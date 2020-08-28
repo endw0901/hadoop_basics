@@ -38,7 +38,8 @@ hdfs dfs -mkdir /user/testdata
 // VMローカルフォルダ(google storageとマウント)の配下データ全部をhdfs作業フォルダにコピー(put)
 hdfs dfs -put ~/spark-dataset/* /user/testdata
 
-
-
-
 ```
+
+- 作業したいときはローカルでデータ作成→google storageにアップロード→マウントしたvmローカルからhdfsの作業フォルダにコピー
+- hdfs上でデータを作成した場合、アウトプットフォルダに作成
+- クラスタ削除するとデータが消えるため、storageから
