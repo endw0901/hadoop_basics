@@ -1,10 +1,9 @@
 # test1
 https://www.udemy.com/course/complete-cca-175-hadoop-spark-developer-with-practice-test/learn/quiz
 
-## code
+## q2
 
 ```
-// q2
 val cusdf = spark.read.format("csv").load("/user/testdata/t1q2_customer.csv")
 cusdf.printSchema()
 val cusdf2 = cusdf.select(col("_c0").as("customer_id"),col("_c1").as("customer_fname"))
@@ -23,5 +22,16 @@ val orddf5 = orddf4.write.mode("overwrite").json("/user/output")
 // spark-shell上でコマンドライン :hdfs
 :sh hdfs dfs -ls /user
 resxxx.lines foreach println
+
+```
+
+## q3
+
+```
+// data upload
+:sh hdfs dfs -put ~/spark-dataset/t1q3_price.csv /user/testdata
+:sh hdfs dfs -ls /user/testdata
+resxx.lines foreach println
+//
 
 ```
