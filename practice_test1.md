@@ -36,4 +36,15 @@ https://intellipaat.com/community/12213/how-does-createorreplacetempview-work-in
 val pricedf = spark.read.format("csv").option("header","true").option("inferSchema","true").load("/user/testdata/t1q3_price.csv")
 pricedf.createOrReplaceTempView("product")
 spark.table("product").count
+
+val maxdf1 = spark.sql("select CONCAT(category,'|',max(price) AS maxprice) from product group by category order by max(price) desc")
+
+maxdf1.coalesce(1).write.mode("overwrite").option("compression","gzip").format("text").save("/user/output")
+
+// output確認
+:sh hdfs dfs -ls /user/output
+resxx.lines foreach println
+
+:sh hdfs dfs -cat /user/output/part-00000-9112568a-8bcc-4a88-86c6-52fc355dc5ad-c000.txt.gz
+
 ```
