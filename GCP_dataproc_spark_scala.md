@@ -33,5 +33,12 @@ cd ./spark-dataset
 ls
 
 // hdfsに作業用フォルダ作成
+hdfs dfs -mkdir /user/testdata
+
+// VMローカルフォルダ(google storageとマウント)の配下データ全部をhdfs作業フォルダにコピー(put)
+hdfs dfs -put ~/spark-dataset/* /user/testdata
+
+
+
 
 ```
