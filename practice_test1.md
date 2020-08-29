@@ -96,3 +96,27 @@ val datadf2 = spark.sql("select category, price from priceview where price > 100
 datadf2.write.mode("overwrite").option("compression","uncompressed").parquet("/user/output/")
 
 ```
+
+
+## q7
+
+- parquetの代わりにcsvを読む
+
+```
+val datadf1 = spark.read.format("csv").option("header","true").option("inferSchema","true").load("/user/testdata/t1q7.csv")
+val datadf2 = datadf1.withColumn("time",to_date(from_unixtime($"time"/1000)))
+val datadf3 = datadf2.filter("time LIKE '1970-01%' and orderid=1 ").groupBy($"orderid").count
+datadf3.write.mode("overwrite").format("json").save("/user/output")
+
+```
+
+
+## q8
+
+
+```
+spark.sqlContext.setConf("hive.exec.dynamic.partition", "true")
+spark.sqlContext.setConf("hive.exec.dynamic.partition.mode", "nonstrict") 
+
+result.write.partitionBy("orderid").format("hive").saveAsTable("costomer_order")
+```
