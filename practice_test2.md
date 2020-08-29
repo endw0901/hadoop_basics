@@ -28,3 +28,37 @@ ordcusdf.write.mode("overwrite").option("header","true").csv("/user/output")
 
 
 ```
+
+## q3
+
+- case classを使う
+
+https://docs.scala-lang.org/ja/tour/unified-types.html
+
+
+```
+// case class 定義
+case class Customer(custId:String,fname:String,lname:String,city:String)
+val cusdf2 = spark.read.textFile("/user/testdata/t2q1_customer.txt").map(x => x.split("\t")).map(c => Customer(c(0),c(1),c(2),c(6)))
+
+spark.sqlContext.setConf("hive.exec.dynamic.partition","true")
+spark.sqlContext.setConf("hive.exec.dynamic.partition.mode","nonstrict")
+
+cusdf2.createOrReplaceTempView("cityview2")
+val cusdf3 = spark.sql("select city, count(custId) from cityview2 groupby city")
+cusdf3.write.mode("overwrite").format("hive").option("compression","gzip").save("/user/output")
+```
+
+
+```
+spark.read.option("sep","|").csv("/user/xxxx").select(col("_c1"),col("_c2").as("state")).
+where("fname like '%M%'").
+groupBy("state").count.write.mode("overwrite").option("compression","gzip").option("fileFormat","parquet").format("hive").saveAsTable("customer_m")
+```
+
+## q4
+
+```
+spark.sql("select product_category_id, product_name, product_price, rank from product_ranked order by product_category_id, product_price").
+write.mode("overwrite").format("text").option("sep","|").save(
+```
